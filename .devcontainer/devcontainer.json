@@ -1,0 +1,37 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/typescript-node",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "eamodio.gitlens",
+                "GitHub.vscode-pull-request-github",
+                "bierner.github-markdown-preview",
+                "yzhang.markdown-all-in-one",
+                "usernamehw.errorlens",
+                "aaron-bond.better-comments",
+                "hediet.vscode-drawio",
+                "ms-vscode.live-server",
+                "formulahendry.auto-close-tag",
+                "formulahendry.auto-complete-tag",
+                "formulahendry.auto-rename-tag",
+                "bierner.color-info",
+                "pranaygp.vscode-css-peek",
+                "ecmel.vscode-html-css",
+                "oderwat.indent-rainbow",
+                "bierner.lit-html",
+                "christian-kohler.path-intellisense",
+                "Tyriar.luna-paint"
+            ],
+            "settings": {
+                "gitlens.showWhatsNewAfterUpgrades": false,
+                "gitlens.showWelcomeOnInstall": false,
+                "editor.wordWrap": "on",
+                "editor.fontSize": 16,
+                "editor.formatOnSave": true,
+                "editor.formatOnSaveMode": "modificationsIfAvailable",
+                "editor.formatOnType": true
+            }
+        }
+    },
+    "postStartCommand": "bash -c git remote set-url origin 'https://github.com/OnslowCollege/$(basename $(pwd))'"
+}
