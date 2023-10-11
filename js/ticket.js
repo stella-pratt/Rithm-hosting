@@ -6,9 +6,21 @@ let SPACE_ROWS = 12;
 let PRICES = {"1": 90, "2": 90, "3": 90, "4": 80, "5": 80, "6": 80, "7": 70, "8": 70, "9": 70};
 
 
-//node testing
-var info_stuff = await fetch("/bookings");
-console.log(info_stuff)
+
+//recieve the booked seats from node js
+fetch("/bookings")
+    // then so it happens after recieving
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then(data => { // assign the data to a variable
+        if (data) {
+            console.log(data);
+            let taken_seats = data
+        }
+    }).catch(err => console.error(err));
+
 
 // define row names
 const ROWS = ['just to make "A" have an index of 1', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ']
