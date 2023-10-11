@@ -327,6 +327,8 @@ document.addEventListener("click", function(e) {
 
 // accessible seat creation
 const space = document.querySelectorAll(".space")
+// keep track of which section for id
+let id_section = 2
 space.forEach((spacey) => {
     // fill the grid with circles
     for (let r = 0; r < SPACE_ROWS; r++) { // repeat for rows
@@ -335,9 +337,12 @@ space.forEach((spacey) => {
             seat.classList.add("seat");
             seat.style.gridRow = (r + 1).toString();
             seat.style.gridColumn = (c + 1).toString();
+            seat.id = id_section + "row" + (c + 1);
             spacey.appendChild(seat);
         }
     }
+    // add 3 for next section
+    id_section += 3;
 });
 // standard seat creation
 const standard = document.querySelectorAll(".standard");
