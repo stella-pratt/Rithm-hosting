@@ -2,8 +2,8 @@ import { menu_btns, mouse_move_updates, mouse_window } from "./global_functions.
 
 let seat_hover = document.querySelector(".seat_hover");
 let cursor = document.querySelector(".mouse_follow");
-let SPACE_ROWS = 12;
-let PRICES = {"1": 90, "2": 90, "3": 90, "4": 80, "5": 80, "6": 80, "7": 70, "8": 70, "9": 70};
+const SPACE_ROWS = 12;
+const PRICES = { "1": 90, "2": 90, "3": 90, "4": 80, "5": 80, "6": 80, "7": 70, "8": 70, "9": 70 };
 
 
 
@@ -11,36 +11,15 @@ let PRICES = {"1": 90, "2": 90, "3": 90, "4": 80, "5": 80, "6": 80, "7": 70, "8"
 const ROWS = ['just to make "A" have an index of 1', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ']
 
 function getSeatInfo(event_element) {
+    let id_str = event_element.id;
     // seat num
-    let seat = event_element.style.gridColumn.replace(/\D/g, '')
+    let seat = id_str.split(/\D/g)[1];
     // row num
-    let row = ROWS[event_element.style.gridRow.replace(/\D/g, '')]
+    let row = id_str.replace(/[0-9]/g, '');
     // section num
-    let seat_section = event_element.parentElement.classList;
-    let sections = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    // keep 3 sections based on sect
-    if (seat_section.contains("sect1")){
-        sections = sections.splice(0,3);
-    } else if (seat_section.contains("sect2")){
-        sections = sections.splice(3,3);
-    } else if (seat_section.contains("sect3")){
-        sections = sections.splice(6,3);
-    }
-    // remove the sections that seat cannot be in
-    if (seat_section.contains("standard")){
-        sections = mySplice(["1", "3", "4", "6", "7", "9"], sections);
-    } else {
-        // if accessible seat
-        sections = mySplice(["2", "5", "8"], sections);
-        if (seat_section.contains("left_space")){
-            // remove right sections
-            sections = mySplice(["3", "6", "9"], sections);
-        } else if (seat_section.contains("right_space")){
-            // remove left sections
-            sections = mySplice(["1", "4", "7"], sections);
-        }
-    }
-    return {"section": sections[0], "row": row, "seat": seat};
+    let section = id_str.split(/\D/g)[0];
+    // return the rows etc
+    return { "section": section, "row": row, "seat": seat };
 }
 
 
@@ -233,12 +212,11 @@ document.addEventListener("click", function(e) {
         }
     } else if (e.target.classList.contains("seat")){
         //check if seat is already selected
-        if (e.target.children.length > 0){
-            // remove the tick if more than 1 remaining
+        if (e.target.children.length > 0) {
+            // remove the tick
+            e.target.children[0].remove();
             if (ticket_details.length > 1){
-                e.target.children[0].remove();
-                // remove the ticket
-                // find the matching index
+                // remove the matching ticket
                 for (let i = 0; i < ticket_details.length; i++){
                     if (ticket_details[i][0] === getSeatInfo(e.target)["section"] && ticket_details[i][1] === getSeatInfo(e.target)["row"] && ticket_details[i][2] === getSeatInfo(e.target)["seat"]){
                         // remove the ticket
@@ -246,6 +224,10 @@ document.addEventListener("click", function(e) {
                         break;
                     }
                 }
+            } else {
+                // if only one left make it blank
+                ticket_details = [[]]
+
             }
 
         } else {
@@ -282,17 +264,25 @@ document.addEventListener("click", function(e) {
         }
         // when seat clicked update the ticket details
         update_tickets(ticket_details);
-    } else if (e.target.classList.contains("delete_ticket")){
-        // check to see how many tickets left
-        if (ticket_details.length > 1) {
+    } else if (e.target.classList.contains("delete_ticket")) {
+        if (ticket_details.length > 0) {
             // remove the ticket
-            ticket_details.splice(e.target.parentElement.children[0].innerHTML - 1, 1);
-            // update the tickets
-            update_tickets(ticket_details);
+            let seat_id_info = ticket_details.splice(e.target.parentElement.children[0].innerHTML - 1, 1);
+            // remove associated tick on seat
+            // create seat id
+            let seat_remove_id = seat_id_info[0].join("");
+            document.getElementById(seat_remove_id).children[0].remove();
         }
+        // if 0 tickets remain add a dud
+        if (ticket_details.length === 0) {
+            // add the dud
+            ticket_details = [[]]
+        }
+        // update the tickets
+        update_tickets(ticket_details);
     } else if (e.target.classList.contains("checkout")){
         // open the popup if more than 0 tickets and all tickets selected
-        if (ticket_details[0].length > 0 && ticket_details[-1] !== []){
+        if (ticket_details[0].length > 0 && ticket_details.slice(-1)[0].length > 0) {
             // show pop up
             document.querySelector(".checkout_border").style.display = "flex";
             document.querySelector(".fade").style.opacity = "80%";

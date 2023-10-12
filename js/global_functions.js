@@ -26,7 +26,7 @@ export function mouse_move_updates(e) {
     let circle = document.querySelector(".mouse_follow");
 
     // change cursor to hover style
-    if (document.querySelector(".artist_name:hover") || document.querySelector(".artist_slide_faded:hover") || document.querySelector(".checkout:hover") || document.querySelector(".cancel:hover") != null) {
+    if (document.querySelector(".artist_name:hover") || document.querySelector(".artist_slide_faded:hover") || document.querySelector(".checkout:hover") || document.querySelector(".cancel:hover") || document.querySelector(".confirm:hover") != null) {
         circle.classList.add("mouse_follow_hover");
     } else if (document.querySelector(".menu_click_detect:hover") || document.querySelector(".menu_dropdown:hover") != null){
         circle.classList.add("mouse_follow_hover2");
