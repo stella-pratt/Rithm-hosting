@@ -359,14 +359,10 @@ body{
 .email p{
     font-size: 1.2vw;
 }
-.email label{
-    height: 60%;
-    width: 100%;
-}
 .email input{
     background: var(--bg_black);
     border: var(--site_purple) solid 0.15vw;
-    height: 100%;
+    height: 60%;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0.3vw;
@@ -383,4 +379,7 @@ body{
     width: 100%;
     font-family: 'Roboto', sans-serif;
     font-size: 0.8vw;
+}
+#seats_input {
+    display: none;
 }

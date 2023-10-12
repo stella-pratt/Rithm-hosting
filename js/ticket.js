@@ -197,11 +197,21 @@ document.addEventListener("click", function(e) {
     } else if (e.target.classList.contains("count_btn")){
         // add or subtract to the number of seats
         if (e.target.innerHTML === "-"){
-            //check if 1 can be subtracted
-            if (ticket_details.length > 1){
-                ticket_details.pop();
-                update_tickets(ticket_details);
+            if (ticket_details.length > 0 && ticket_details[0].length > 0) {
+                // remove the last ticket
+                let seat_id_info = ticket_details.pop();
+                // remove associated tick on seat
+                // create seat id
+                console.log(seat_id_info)
+                let seat_remove_id = seat_id_info.join("");
+                document.getElementById(seat_remove_id).children[0].remove();
             }
+            // if 0 tickets remain add a dud
+            if (ticket_details.length === 0) {
+                // add the dud
+                ticket_details = [[]]
+            }
+            update_tickets(ticket_details)
         } else if (e.target.innerHTML === "+"){
             // add to count
             if (ticket_details.length < 10){
@@ -227,9 +237,7 @@ document.addEventListener("click", function(e) {
             } else {
                 // if only one left make it blank
                 ticket_details = [[]]
-
             }
-
         } else {
             // add the ticket
             // check if any empty tickets
@@ -265,7 +273,7 @@ document.addEventListener("click", function(e) {
         // when seat clicked update the ticket details
         update_tickets(ticket_details);
     } else if (e.target.classList.contains("delete_ticket")) {
-        if (ticket_details.length > 0) {
+        if (ticket_details.length > 0 && ticket_details[0].length > 0) {
             // remove the ticket
             let seat_id_info = ticket_details.splice(e.target.parentElement.children[0].innerHTML - 1, 1);
             // remove associated tick on seat
@@ -282,14 +290,21 @@ document.addEventListener("click", function(e) {
         update_tickets(ticket_details);
     } else if (e.target.classList.contains("checkout")){
         // open the popup if more than 0 tickets and all tickets selected
-        if (ticket_details[0].length > 0 && ticket_details.slice(-1)[0].length > 0) {
+        if (ticket_details[0].length > 0) {
             // show pop up
             document.querySelector(".checkout_border").style.display = "flex";
             document.querySelector(".fade").style.opacity = "80%";
             document.querySelector(".fade").style.pointerEvents = "all";
+            // remove empty list items
+            let final_details = ticket_details.filter((seat) => seat.length > 1);
+            final_details.forEach((seat) => {
+                final_details[final_details.indexOf(seat)] = seat.join("")
+            });
             // change the info on pop up
             document.getElementById("price").innerHTML = document.querySelector(".total_cost").innerHTML;
             document.querySelector(".ticket_total").innerHTML = document.querySelector(".seat_count").innerHTML;
+            // add in the booked seats
+            document.getElementById("seats_input").value = final_details;
         }
     } else if (e.target.classList.contains("fade") || e.target.classList.contains("cancel")){ // click off and canecl btn
         // close the popup

@@ -15,7 +15,7 @@
     <div class="mouse_follow"></div>
     <div class="fade"></div>
     <div class="checkout_border">
-        <div class="checkout_container">
+        <form class="checkout_container" action="/submit_booking" method="post">
             <img src="images/logo.png" alt="RITHM logo" class="checkout_logo">
             <div class="ticket_summary">
                 <div>
@@ -29,19 +29,19 @@
             </div>
             <div class="email">
                 <p>Email:</p>
-                <label>
-                    <input type="text" id="email_input" class="email_input">
-                </label>
+                <input type="text" name="email" id="email_input" class="email_input">
             </div>
             <div class="pay_agree">
                 <input type="checkbox" id="payagreement">
-                <label for="payagreement">I agree to pay in full upon arrival, or I understand that I will be refused entry.</label>
+                <label for="payagreement">I agree to pay in full upon arrival, or I understand that I will be refused
+                    entry.</label>
             </div>
+            <input type="text" name="seats" id="seats_input" value="">
             <div class="checkout_buttons">
                 <div class="checkout_btn cancel">Cancel</div>
-                <div class="checkout_btn confirm">Confirm</div>
+                <input type="submit" value="confirm" class="checkout_btn confirm"></input>
             </div>
-        </div>
+        </form>
     </div>
     <div class="seat_hover">
         <div class="hover_info"><p>Section</p><p></p></div>
