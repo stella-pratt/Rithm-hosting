@@ -7,21 +7,6 @@ let PRICES = {"1": 90, "2": 90, "3": 90, "4": 80, "5": 80, "6": 80, "7": 70, "8"
 
 
 
-//recieve the booked seats from node js
-fetch("/bookings")
-    // then so it happens after recieving
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-    }).then(data => { // assign the data to a variable
-        if (data) {
-            console.log(data);
-            let taken_seats = data
-        }
-    }).catch(err => console.error(err));
-
-
 // define row names
 const ROWS = ['just to make "A" have an index of 1', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ']
 
@@ -328,7 +313,8 @@ document.addEventListener("click", function(e) {
 // accessible seat creation
 const space = document.querySelectorAll(".space")
 // keep track of which section for id
-let id_section = 2
+const id_sections = [1, 3, 4, 6, 7, 9];
+let id_section = 0;
 space.forEach((spacey) => {
     // fill the grid with circles
     for (let r = 0; r < SPACE_ROWS; r++) { // repeat for rows
@@ -337,15 +323,16 @@ space.forEach((spacey) => {
             seat.classList.add("seat");
             seat.style.gridRow = (r + 1).toString();
             seat.style.gridColumn = (c + 1).toString();
-            seat.id = id_section + "row" + (c + 1);
+            seat.id = id_sections[id_section] + ROWS[r + 1] + (c + 1);
             spacey.appendChild(seat);
         }
     }
-    // add 3 for next section
-    id_section += 3;
+    // add 1 for next section
+    id_section += 1;
 });
 // standard seat creation
 const standard = document.querySelectorAll(".standard");
+let standard_sections = 2
 standard.forEach((standardy) => {
     // fill the grid with circles
     for (let r = 0; r < 18; r++) { // repeat for rows
@@ -355,10 +342,35 @@ standard.forEach((standardy) => {
             seat.classList.add("standard_seat")
             seat.style.gridRow = (r + 1).toString();
             seat.style.gridColumn = (c + 1).toString();
+            seat.id = standard_sections + ROWS[r + 1] + (c + 1);
             standardy.appendChild(seat);
         }
     }
+    standard_sections += 3;
 });
+
+
+//recieve the booked seats from node js
+fetch("/bookings")
+    // then so it happens after recieving
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then(data => { // assign the data to a variable
+        if (data) {
+            let keys = Object.keys(data);
+            keys.forEach((key) => {
+                data[key].forEach((taken_seat) => {
+                    // grey out the seats needeed
+                    let edit_seat = document.getElementById(taken_seat);
+                    edit_seat.style.background = "#989898";
+                    edit_seat.style.pointerEvents = "none";
+                });
+            });
+        }
+    }).catch(err => console.error(err));
+
 
 
 
