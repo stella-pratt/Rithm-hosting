@@ -1,6 +1,8 @@
 // node js/seats_info
-var host = "127.0.0.1";
-var port = 1338;
+
+const http = require('http');
+const port = process.env.PORT || 10000;
+
 var express = require("express");
 
 var app = express();
