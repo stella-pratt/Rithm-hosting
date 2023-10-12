@@ -1,8 +1,4 @@
 // node js/seats_info
-
-const http = require('http');
-const port = process.env.PORT || 10000;
-
 var express = require("express");
 
 var app = express();
